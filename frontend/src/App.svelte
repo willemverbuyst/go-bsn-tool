@@ -1,4 +1,10 @@
 <script>
+  import { GenerateBSN } from "../wailsjs/go/main/App.js";
+  let bsnNumber;
+
+  function generateBSN() {
+    GenerateBSN(false).then((result) => (bsnNumber = result));
+  }
 </script>
 
 <main>
@@ -8,7 +14,9 @@
 
   <form>
     <section>
-      <button id="bsn-generator-btn" type="button">generate BSN</button>
+      <button id="bsn-generator-btn" type="button" on:click={generateBSN}
+        >generate BSN</button
+      >
     </section>
     <section>
       <div>
@@ -17,6 +25,8 @@
           name="bsn-number"
           id="bsn-number"
           aria-label="bsn-number"
+          autocomplete="off"
+          bind:value={bsnNumber}
         />
         <button id="bsn-number__copy-button" type="button">
           <i class="fa fa-copy" id="bsn-number__copy-icon"></i>
