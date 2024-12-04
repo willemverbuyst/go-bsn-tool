@@ -5,3 +5,7 @@
 export function GenerateBSN(arg1) {
   return window['go']['main']['App']['GenerateBSN'](arg1);
 }
+
+export function IsValidBSN(arg1) {
+  return window['go']['main']['App']['IsValidBSN'](arg1);
+}

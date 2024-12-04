@@ -32,10 +32,6 @@ type BSN struct {
 	I8      int
 }
 
-// generateBSN generates a valid BSN
-//
-// If withLeadingZeroes is true, the BSN starts with "0000". Otherwise, it starts with "9999".
-// Returns a valid BSN string of 9 characters.
 func (a *App) GenerateBSN(withLeadingZeroes bool) string {
 	rng := rand.New(rand.NewSource(time.Now().UnixNano())) // Create a new random number generator
 
@@ -72,4 +68,31 @@ func (a *App) GenerateBSN(withLeadingZeroes bool) string {
 	}
 
 	return bsn.Leading + strconv.Itoa(bsn.I4) + strconv.Itoa(bsn.I5) + strconv.Itoa(bsn.I6) + strconv.Itoa(bsn.I7) + strconv.Itoa(bsn.I8)
+}
+
+func (a *App) IsValidBSN(bsn string) bool {
+	length := len(bsn)
+	if length < 8 || length > 9 {
+		return false
+	}
+
+	// Convert the BSN string to an array of integers
+	numbers := make([]int, length)
+	for i, char := range bsn {
+		num, err := strconv.Atoi(string(char))
+		if err != nil {
+			return false // If a character is not a digit, return false
+		}
+		numbers[i] = num
+	}
+
+	lastNumber := numbers[length-1]
+
+	// Perform the modulus-11 check
+	sum := 0
+	for i, num := range numbers[:length-1] { // Exclude the last digit
+		sum += num * (length - i)
+	}
+
+	return (sum-lastNumber)%11 == 0
 }

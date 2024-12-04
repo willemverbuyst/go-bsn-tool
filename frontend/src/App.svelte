@@ -1,9 +1,18 @@
 <script>
-  import { GenerateBSN } from "../wailsjs/go/main/App.js";
-  let bsnNumber;
+  import { GenerateBSN, IsValidBSN } from "../wailsjs/go/main/App.js";
+  let bsnNumber = "";
+  let showFeedback = false;
+  let isValid = false;
 
   function generateBSN() {
     GenerateBSN(false).then((result) => (bsnNumber = result));
+  }
+
+  function isValidBSN() {
+    IsValidBSN(bsnNumber.valueOf()).then((result) => {
+      isValid = result;
+      showFeedback = true;
+    });
   }
 </script>
 
@@ -32,10 +41,16 @@
           <i class="fa fa-copy" id="bsn-number__copy-icon"></i>
         </button>
       </div>
-      <p id="feedback"></p>
+      {#if showFeedback && isValid}
+        <p id="feedback" class="feedback__valid">this bsn is valid</p>
+      {:else if showFeedback && !isValid}
+        <p id="feedback" class="feedback__not-valid">this bsn is not valid</p>
+      {/if}
     </section>
     <section>
-      <button id="bsn-validator-btn" type="button">validate BSN</button>
+      <button id="bsn-validator-btn" type="button" on:click={isValidBSN}
+        >validate BSN</button
+      >
     </section>
   </form>
 </main>
@@ -154,5 +169,13 @@
     bottom: -5%;
     left: 50%;
     transform: translateX(-50%);
+  }
+
+  .feedback__valid {
+    color: green;
+  }
+
+  .feedback__not-valid {
+    color: red;
   }
 </style>
