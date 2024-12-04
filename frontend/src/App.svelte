@@ -1,79 +1,148 @@
 <script>
-  import logo from './assets/images/logo-universal.png'
-  import {Greet} from '../wailsjs/go/main/App.js'
-
-  let resultText = "Please enter your name below 👇"
-  let name
-
-  function greet() {
-    Greet(name).then(result => resultText = result)
-  }
 </script>
 
 <main>
-  <img alt="Wails logo" id="logo" src="{logo}">
-  <div class="result" id="result">{resultText}</div>
-  <div class="input-box" id="input">
-    <input autocomplete="off" bind:value={name} class="input" id="name" type="text"/>
-    <button class="btn" on:click={greet}>Greet</button>
-  </div>
+  <header>
+    <h1>BSN-tool</h1>
+  </header>
+
+  <form>
+    <section>
+      <button id="bsn-generator-btn" type="button">generate BSN</button>
+    </section>
+    <section>
+      <div>
+        <input
+          type="text"
+          name="bsn-number"
+          id="bsn-number"
+          aria-label="bsn-number"
+        />
+        <button id="bsn-number__copy-button" type="button">
+          <i class="fa fa-copy" id="bsn-number__copy-icon"></i>
+        </button>
+      </div>
+      <p id="feedback"></p>
+    </section>
+    <section>
+      <button id="bsn-validator-btn" type="button">validate BSN</button>
+    </section>
+  </form>
 </main>
 
 <style>
-
-  #logo {
-    display: block;
-    width: 50%;
-    height: 50%;
+  main {
     margin: auto;
-    padding: 10% 0 0;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    background-origin: content-box;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
   }
 
-  .result {
-    height: 20px;
-    line-height: 20px;
-    margin: 1.5rem auto;
+  section {
+    padding: 1rem;
   }
 
-  .input-box .btn {
-    width: 60px;
-    height: 30px;
-    line-height: 30px;
-    border-radius: 3px;
+  header {
+    margin-top: 5vh;
+    background: #666666;
+    background: -webkit-linear-gradient(to right, #666666 0%, #b8b8b8 100%);
+    background: -moz-linear-gradient(to right, #666666 0%, #b8b8b8 100%);
+    background: linear-gradient(to right, #666666 0%, #b8b8b8 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  input {
+    min-width: 35rem;
+    max-width: 90vw;
     border: none;
-    margin: 0 0 0 20px;
-    padding: 0 8px;
-    cursor: pointer;
-  }
-
-  .input-box .btn:hover {
-    background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
-    color: #333333;
-  }
-
-  .input-box .input {
-    border: none;
-    border-radius: 3px;
     outline: none;
-    height: 30px;
-    line-height: 30px;
-    padding: 0 10px;
-    background-color: rgba(240, 240, 240, 1);
-    -webkit-font-smoothing: antialiased;
+    background: none;
+    font-size: 2rem;
+    padding: 2rem 2rem;
+    color: inherit;
+    margin-bottom: 3rem;
+    margin-top: 3rem;
+    border-radius: 3rem;
+    box-shadow:
+      inset 8px 8px 8px #cbced1,
+      inset -8px -8px 8px #fff;
+    text-align: center;
   }
 
-  .input-box .input:hover {
+  button {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
     border: none;
-    background-color: rgba(255, 255, 255, 1);
+    outline: none;
+    cursor: pointer;
+    min-width: 35rem;
+    max-width: 90vw;
+    height: 6rem;
+    border-radius: 3rem;
+    font-size: 2rem;
+    font-family: inherit;
+    color: #044d8c;
+    background-color: #f3f3f3;
+    box-shadow:
+      3px 3px 8px #b1b1b1,
+      -3px -3px 8px #fff;
+    transition: 0.5s;
   }
 
-  .input-box .input:focus {
+  button:hover {
+    box-shadow:
+      2px 2px 5px #b1b1b1,
+      -2px -2px 5px #fff;
+  }
+
+  button:active {
+    box-shadow:
+      inset 1px 1px 3px #cbced1,
+      inset -1px -1px 3px #fff;
+  }
+
+  section div {
+    position: relative;
+  }
+
+  #bsn-number__copy-button {
+    all: revert;
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
     border: none;
-    background-color: rgba(255, 255, 255, 1);
+    background-color: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    display: none;
   }
 
+  #bsn-number__copy-icon {
+    font-size: 2rem;
+    color: #666666;
+    background-color: #f3f3f3;
+    transition: 0.3s;
+  }
+
+  #bsn-number__copy-icon:hover {
+    transform: scale(1.1);
+  }
+
+  form section:nth-child(2) {
+    position: relative;
+  }
+
+  form section:nth-child(2) #feedback {
+    width: 100%;
+    position: absolute;
+    bottom: -5%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 </style>
