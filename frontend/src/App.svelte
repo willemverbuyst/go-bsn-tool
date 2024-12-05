@@ -3,17 +3,41 @@
   let bsnNumber = "";
   let showFeedback = false;
   let isValid = false;
+  let showCopyIcon = false;
+  let showCheckMark = false;
 
   function generateBSN() {
     showFeedback = false;
     GenerateBSN(false).then((result) => (bsnNumber = result));
+    showCopyIcon = true;
+    showCheckMark = false;
   }
 
   function isValidBSN() {
     IsValidBSN(bsnNumber.valueOf()).then((result) => {
       isValid = result;
       showFeedback = true;
+
+      if (isValid) {
+        showCopyIcon = true;
+        showCheckMark = false;
+      } else {
+        showCopyIcon = false;
+        showCheckMark = false;
+      }
     });
+  }
+
+  function copyToClipboard() {
+    navigator.clipboard
+      .writeText(bsnNumber)
+      .then(() => {
+        showCopyIcon = false;
+        showCheckMark = true;
+      })
+      .catch((err) => {
+        console.error("Failed to copy text: ", err);
+      });
   }
 </script>
 
@@ -39,10 +63,20 @@
           bind:value={bsnNumber}
           on:input={() => {
             showFeedback = false;
+            showCopyIcon = false;
+            showCheckMark = false;
           }}
         />
-        <button id="bsn-number__copy-button" type="button">
-          <i class="fa fa-copy" id="bsn-number__copy-icon"></i>
+        <button
+          id="bsn-number__copy-button"
+          type="button"
+          on:click={() => copyToClipboard()}
+        >
+          {#if showCopyIcon}
+            <i class="fas fa-copy" id="bsn-number__copy-icon"></i>
+          {:else if showCheckMark}
+            <i class="fas fa-check" id="bsn-number__copy-icon"></i>
+          {/if}
         </button>
       </div>
       {#if showFeedback && isValid}
@@ -149,7 +183,7 @@
     padding: 0;
     margin: 0;
     cursor: pointer;
-    display: none;
+    /* display: none; */
   }
 
   #bsn-number__copy-icon {
