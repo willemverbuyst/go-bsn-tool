@@ -2,6 +2,30 @@ package main
 
 import "testing"
 
+func TestGenerateBSN(t *testing.T) {
+	app := &App{}
+
+	for i := 1; i <= 50; i++ {
+		bsn := app.GenerateBSN(false)
+
+		t.Run("GenerateBSN:"+bsn, func(t *testing.T) {
+			if !app.IsValidBSN(bsn) {
+				t.Errorf("Expected BSN %s to be valid, but got invalid", bsn)
+			}
+		})
+	}
+
+	for i := 1; i <= 50; i++ {
+		bsn := app.GenerateBSN(true)
+
+		t.Run("GenerateBSN w/ leading zeros:"+bsn, func(t *testing.T) {
+			if !app.IsValidBSN(bsn) {
+				t.Errorf("Expected BSN %s to be valid, but got invalid", bsn)
+			}
+		})
+	}
+}
+
 func TestIsValidBSN(t *testing.T) {
 	app := &App{}
 
