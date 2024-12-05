@@ -5,6 +5,7 @@
   let isValid = false;
 
   function generateBSN() {
+    showFeedback = false;
     GenerateBSN(false).then((result) => (bsnNumber = result));
   }
 
@@ -36,6 +37,9 @@
           aria-label="bsn-number"
           autocomplete="off"
           bind:value={bsnNumber}
+          on:input={() => {
+            showFeedback = false;
+          }}
         />
         <button id="bsn-number__copy-button" type="button">
           <i class="fa fa-copy" id="bsn-number__copy-icon"></i>
